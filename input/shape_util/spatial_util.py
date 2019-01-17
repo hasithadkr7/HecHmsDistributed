@@ -1,10 +1,8 @@
 import os
 import tempfile
 import unittest
-
 import numpy as np
 import geopandas as gpd
-
 from scipy.spatial import Voronoi
 from shapely.geometry import Polygon, Point
 from resources import manager as res_mgr

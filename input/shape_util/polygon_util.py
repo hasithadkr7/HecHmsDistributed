@@ -1,19 +1,17 @@
 from resources import manager as res_mgr
-from input.shape_util.spatial_util import get_voronoi_polygons
+from .spatial_util import get_voronoi_polygons
 import pandas as pd
 import os
 import copy
 import datetime
 import numpy as np
 import geopandas as gpd
-from scipy.spatial import Voronoi
 from input.station_metadata import meta_data
 from db_layer import get_event_id, get_time_series_values
 from config import SUB_CATCHMENT_SHAPE_FILE_DIR, THESSIAN_DECIMAL_POINTS
 from db_layer import MySqlAdapter
 from functools import reduce
 import csv
-import sys
 
 TIME_GAP_MINUTES = 5
 MISSING_ERROR_PERCENTAGE = 0.3
