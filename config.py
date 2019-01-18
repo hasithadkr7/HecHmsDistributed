@@ -15,12 +15,8 @@ MYSQL_DB = 'curw'
 
 BACK_DAYS = 2
 
-# MYSQL_USER = 'curw'
-# MYSQL_PASSWORD = 'curw'
-# MYSQL_HOST = '124.43.13.195'
-# MYSQL_PORT = '5036'
-# MYSQL_DB = 'curw'
 RAIN_FALL_FILE_NAME = '/home/hasitha/PycharmProjects/hechms_distributed/DailyRain-{}.csv'
+DISCHARGE_FILE_NAME = '/home/hasitha/PycharmProjects/hechms_distributed/DailyDischarge-{}.csv'
 
 GAGE_MANAGER_TEMPLATE = 'Gage Manager: {MODEL_NAME}\n     Version: 4.2.1\n     Filepath Separator: \ \nEnd:'
 
@@ -55,3 +51,21 @@ RUN_FILE_TEMPLATE = 'Run: {MODEL_NAME}\n     Default Description: Yes\n     Log 
                     'End:'
 
 RUN_FILE_NAME = '/home/hasitha/PycharmProjects/hechms_distributed/{MODEL_NAME}.run'
+
+HEC_HMS_HOME = '/home/curw/distributed_hec/hec-hms-421'
+HEC_HMS_SH = 'hec-hms.sh'
+HEC_DSSVUE_HOME = '/home/curw/distributed_hec/hec-dssvue201'
+HEC_DSSVUE_SH = 'hec-dssvue.sh'
+HEC_HMS_MODEL_DIR = '/home/curw/distributed_hec/distributed_model'
+BASIN_STATES_DIR = 'basinStates'
+HEC_EVENT = 'hec_event'
+PRE_PROCESSING_SCRIPT = 'CSVTODSS.py'
+POST_PROCESSING_SCRIPT = 'DSSTOCSV.py'
+HEC_INPUT_DSS = '{MODEL_NAME}_input.dss'
+HEC_OUTPUT_DSS = '{MODEL_NAME}_run.dss'
+CONTROL_FILE_NAME = '{MODEL_NAME}.control'
+GAGE_FILE_NAME = '{MODEL_NAME}.gage'
+RUN_FILE_NAME = '{MODEL_NAME}.run'
+STATE_INDEX_NAME = HEC_EVENT + '.stateIndex'
+HEC_EVENT_SCRIPT = '{MODEL_NAME}.script'
+

@@ -2,13 +2,15 @@ from flask import Flask, request, jsonify
 from flask_json import FlaskJSON, JsonError, json_response
 from flask_uploads import UploadSet, configure_uploads
 from os import path
-from config import UPLOADS_DEFAULT_DEST, HECHMS_LIBS_DIR, DISTRIBUTED_MODEL_TEMPLATE_DIR, INIT_DATE_TIME_FORMAT, RAIN_FALL_FILE_NAME
-from input.shape_util.polygon_util import get_sub_ratios, get_timeseris, get_sub_catchment_rain_files, get_rain_files
+from datetime import datetime,timedelta
+from pathlib import Path
+
+from config import UPLOADS_DEFAULT_DEST, INIT_DATE_TIME_FORMAT, RAIN_FALL_FILE_NAME, HEC_HMS_MODEL_DIR
+from input.shape_util.polygon_util import get_rain_files
 from input.gage.model_gage import create_gage_file, create_gage_file_by_rain_file
 from input.control.model_control import create_control_file, create_control_file_by_rain_file
 from input.run.model_run import create_run_file
-from datetime import datetime,timedelta
-from pathlib import Path
+from model.model_execute import execute_pre_dssvue, execute_post_dssvue, execute_hechms
 
 
 app = Flask(__name__)
@@ -74,6 +76,70 @@ def init_run():
     return json_response(status_=200, run_id=run_id, description='Successfully saved files.')
 
 
+@app.route('/HECHMS/distributed/init', methods=['GET', 'POST'])
+@app.route('/HECHMS/distributed/init/<string:run_datetime>',  methods=['GET', 'POST'])
+@app.route('/HECHMS/distributed/init/<string:run_datetime>/<int:back_days>/<int:forward_days>',  methods=['GET', 'POST'])
+def prepare_input_files(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'), back_days=2, forward_days=3):
+    print('prepare_input_files.')
+    print('run_datetime : ', run_datetime)
+    print('back_days : ', back_days)
+    print('forward_days : ', forward_days)
+    run_datetime = datetime.strptime(run_datetime, '%Y-%m-%d %H:%M:%S')
+    to_date = run_datetime + timedelta(days=forward_days)
+    from_date = run_datetime - timedelta(days=back_days)
+    file_date = run_datetime.strftime('%Y-%m-%d')
+    from_date = from_date.strftime('%Y-%m-%d %H:%M:%S')
+    to_date = to_date.strftime('%Y-%m-%d %H:%M:%S')
+    file_name = RAIN_FALL_FILE_NAME.format(file_date)
+    print('file_name : ', file_name)
+    print('{from_date, to_date} : ', {from_date, to_date})
+    get_rain_files(file_name, run_datetime.strftime('%Y-%m-%d %H:%M:%S'), forward_days, back_days)
+    rain_fall_file = Path(file_name)
+    if rain_fall_file.is_file():
+        create_gage_file_by_rain_file('distributed_model', file_name)
+        create_control_file_by_rain_file('distributed_model', file_name)
+    else:
+        create_gage_file('distributed_model', from_date, to_date)
+        create_control_file('distributed_model', from_date, to_date)
+    create_run_file('distributed_model', run_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+
+
+@app.route('/HECHMS/distributed/pre-process', methods=['GET', 'POST'])
+@app.route('/HECHMS/distributed/pre-process/<string:run_datetime>',  methods=['GET', 'POST'])
+def pre_processing(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S')):
+    print('pre_processing.')
+    print('run_datetime : ', run_datetime)
+    run_datetime = datetime.strptime(run_datetime, '%Y-%m-%d %H:%M:%S')
+    ret_code = execute_pre_dssvue('distributed_model', run_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+    if ret_code == 0:
+        return jsonify({'Result': 'Success'})
+    else:
+        return jsonify({'Result': 'Fail'})
+
+
+@app.route('/HECHMS/distributed/run', methods=['GET', 'POST'])
+def run_hec_hms_model():
+    print('run_hec_hms_model.')
+    ret_code = execute_hechms('distributed_model', HEC_HMS_MODEL_DIR)
+    if ret_code == 0:
+        return jsonify({'Result': 'Success'})
+    else:
+        return jsonify({'Result': 'Fail'})
+
+
+@app.route('/HECHMS/distributed/post-process', methods=['GET', 'POST'])
+@app.route('/HECHMS/distributed/post-process/<string:run_datetime>',  methods=['GET', 'POST'])
+def post_processing(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S')):
+    print('post_processing.')
+    print('run_datetime : ', run_datetime)
+    run_datetime = datetime.strptime(run_datetime, '%Y-%m-%d %H:%M:%S')
+    ret_code = execute_post_dssvue('distributed_model', run_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+    if ret_code == 0:
+        return jsonify({'Result': 'Success'})
+    else:
+        return jsonify({'Result': 'Fail'})
+
+
 @app.route('/HECHMS/distributed/rain-fall', methods=['GET', 'POST'])
 @app.route('/HECHMS/distributed/rain-fall/<string:run_datetime>',  methods=['GET', 'POST'])
 @app.route('/HECHMS/distributed/rain-fall/<string:run_datetime>/<int:back_days>/<int:forward_days>',  methods=['GET', 'POST'])
@@ -111,7 +177,7 @@ def get_gage_file(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'), bac
     file_date = run_datetime.strftime('%Y-%m-%d')
     from_date = from_date.strftime('%Y-%m-%d %H:%M:%S')
     to_date = to_date.strftime('%Y-%m-%d %H:%M:%S')
-    file_name = 'output/DailyRain-{}.csv'.format(file_date)
+    file_name = RAIN_FALL_FILE_NAME.format(file_date)
     rain_fall_file = Path(file_name)
     if rain_fall_file.is_file():
         create_gage_file_by_rain_file('distributed_model', file_name)
