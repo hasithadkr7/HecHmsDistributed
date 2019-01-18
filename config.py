@@ -15,8 +15,8 @@ MYSQL_DB = 'curw'
 
 BACK_DAYS = 2
 
-RAIN_FALL_FILE_NAME = '/home/hasitha/PycharmProjects/hechms_distributed/DailyRain-{}.csv'
-DISCHARGE_FILE_NAME = '/home/hasitha/PycharmProjects/hechms_distributed/DailyDischarge-{}.csv'
+RAIN_FALL_FILE_NAME = '/home/curw/distributed_hec/OUTPUT/DailyRain-{}.csv'
+DISCHARGE_FILE_NAME = '/home/curw/distributed_hec/OUTPUT/DailyDischarge-{}.csv'
 
 GAGE_MANAGER_TEMPLATE = 'Gage Manager: {MODEL_NAME}\n     Version: 4.2.1\n     Filepath Separator: \ \nEnd:'
 
@@ -28,7 +28,7 @@ GAGE_TEMPLATE = 'Gage: {GAGE_NAME}\n     Last Modified Date: 26 May 2018\n     L
                 '       DSS Pathname: //{GAGE_NAME}/PRECIP-INC//1HOUR/GAGE/\n       Start Time: {START_DATE}\n' \
                 '       End Time: {END_DATE}\n     End Variant: Variant-1\nEnd:'
 
-GAGE_FILE_NAME = '/home/hasitha/PycharmProjects/hechms_distributed/{MODEL_NAME}.gage'
+GAGE_FILE_NAME = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}.gage'
 
 HEC_HMS_VERSION = '4.2.1'
 
@@ -37,7 +37,7 @@ CONTROL_TEMPLATE = 'Control: {MODEL_NAME}\n     Description: Distributed HecHms\
                    '    Start Time: {START_TIME}\n     End Date: {END_DATE}\n     End Time: {END_TIME}\n     Time Interval: {TIME_INTERVAL}\n' \
                    '     Grid Write Interval: 1440\n     Grid Write Time Shift: 0\nEnd:'
 
-CONTROL_FILE_NAME = '/home/hasitha/PycharmProjects/hechms_distributed/{MODEL_NAME}.control'
+CONTROL_FILE_NAME = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}.control'
 
 RUN_FILE_TEMPLATE = 'Run: {MODEL_NAME}\n     Default Description: Yes\n     Log File: {MODEL_NAME}.log\n' \
                     '     DSS File: {MODEL_NAME}_input.dss\n' \
@@ -50,7 +50,7 @@ RUN_FILE_TEMPLATE = 'Run: {MODEL_NAME}\n     Default Description: Yes\n     Log 
                     '     Control: {MODEL_NAME}\n' \
                     'End:'
 
-RUN_FILE_NAME = '/home/hasitha/PycharmProjects/hechms_distributed/{MODEL_NAME}.run'
+RUN_FILE_NAME = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}.run'
 
 HEC_HMS_HOME = '/home/curw/distributed_hec/hec-hms-421'
 HEC_HMS_SH = 'hec-hms.sh'
