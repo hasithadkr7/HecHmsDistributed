@@ -93,15 +93,20 @@ def prepare_input_files(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'
     file_name = RAIN_FALL_FILE_NAME.format(file_date)
     print('file_name : ', file_name)
     print('{from_date, to_date} : ', {from_date, to_date})
-    get_rain_files(file_name, run_datetime.strftime('%Y-%m-%d %H:%M:%S'), forward_days, back_days)
-    rain_fall_file = Path(file_name)
-    if rain_fall_file.is_file():
-        create_gage_file_by_rain_file('distributed_model', file_name)
-        create_control_file_by_rain_file('distributed_model', file_name)
-    else:
-        create_gage_file('distributed_model', from_date, to_date)
-        create_control_file('distributed_model', from_date, to_date)
-    create_run_file('distributed_model', run_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+    try:
+        get_rain_files(file_name, run_datetime.strftime('%Y-%m-%d %H:%M:%S'), forward_days, back_days)
+        rain_fall_file = Path(file_name)
+        if rain_fall_file.is_file():
+            create_gage_file_by_rain_file('distributed_model', file_name)
+            create_control_file_by_rain_file('distributed_model', file_name)
+        else:
+            create_gage_file('distributed_model', from_date, to_date)
+            create_control_file('distributed_model', from_date, to_date)
+        create_run_file('distributed_model', run_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+        return jsonify({'Result': 'Success'})
+    except Exception as e:
+        return jsonify({'Result': 'Fail'})
+
 
 
 @app.route('/HECHMS/distributed/pre-process', methods=['GET', 'POST'])
@@ -241,6 +246,6 @@ def is_valid_init_dt(date_time):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='192.168.1.43', port=5000)
 
 # /home/curw/distributed_hec/hechms-distributed
