@@ -108,14 +108,12 @@ def prepare_input_files(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'
         return jsonify({'Result': 'Fail'})
 
 
-
-@app.route('/HECHMS/distributed/pre-process', methods=['GET', 'POST'])
-@app.route('/HECHMS/distributed/pre-process/<string:run_datetime>',  methods=['GET', 'POST'])
-def pre_processing(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S')):
+@app.route('/HECHMS/distributed/pre-process/<string:run_datetime>/<int:back_days>',  methods=['GET', 'POST'])
+def pre_processing(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'), back_days=2):
     print('pre_processing.')
     print('run_datetime : ', run_datetime)
     run_datetime = datetime.strptime(run_datetime, '%Y-%m-%d %H:%M:%S')
-    ret_code = execute_pre_dssvue('distributed_model', run_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+    ret_code = execute_pre_dssvue(run_datetime.strftime('%Y-%m-%d %H:%M:%S'), back_days)
     if ret_code == 0:
         return jsonify({'Result': 'Success'})
     else:
@@ -132,13 +130,12 @@ def run_hec_hms_model():
         return jsonify({'Result': 'Fail'})
 
 
-@app.route('/HECHMS/distributed/post-process', methods=['GET', 'POST'])
-@app.route('/HECHMS/distributed/post-process/<string:run_datetime>',  methods=['GET', 'POST'])
-def post_processing(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S')):
-    print('post_processing.')
+@app.route('/HECHMS/distributed/post-process/<string:run_datetime>/<int:back_days>',  methods=['GET', 'POST'])
+def post_processing(run_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'), back_days=2):
+    print('pre_processing.')
     print('run_datetime : ', run_datetime)
     run_datetime = datetime.strptime(run_datetime, '%Y-%m-%d %H:%M:%S')
-    ret_code = execute_post_dssvue('distributed_model', run_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+    ret_code = execute_post_dssvue(run_datetime.strftime('%Y-%m-%d %H:%M:%S'), back_days)
     if ret_code == 0:
         return jsonify({'Result': 'Success'})
     else:
@@ -246,6 +243,7 @@ def is_valid_init_dt(date_time):
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.43', port=5000)
+    #app.run(host='192.168.1.43', port=5000)
+    app.run(port=5000)
 
 # /home/curw/distributed_hec/hechms-distributed

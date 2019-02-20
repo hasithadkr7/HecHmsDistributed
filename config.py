@@ -2,7 +2,7 @@ INIT_DATE_TIME_FORMAT = "%Y-%m-%d_%H:%M:%S"
 UPLOADS_DEFAULT_DEST = ''
 DISTRIBUTED_MODEL_TEMPLATE_DIR = ''
 HECHMS_LIBS_DIR = ''
-SUB_CATCHMENT_SHAPE_FILE_DIR = ''
+SUB_CATCHMENT_SHAPE_FILE_DIR = '/home/hasitha/PycharmProjects/HecHmsDistributed/output'
 THESSIAN_DECIMAL_POINTS = 4
 
 OBSERVED_MYSQL_HOST = '192.168.1.43'
@@ -15,16 +15,17 @@ MYSQL_DB = 'curw'
 
 BACK_DAYS = 2
 
-RAIN_FALL_FILE_NAME = '/home/curw/distributed_hec/OUTPUT/DailyRain-{}.csv'
+#RAIN_FALL_FILE_NAME = '/home/curw/distributed_hec/OUTPUT/DailyRain-{}.csv'
+RAIN_FALL_FILE_NAME = '/home/hasitha/PycharmProjects/HecHmsDistributed/output/DailyRain-{}.csv'
 DISCHARGE_FILE_NAME = '/home/curw/distributed_hec/OUTPUT/DailyDischarge-{}.csv'
 
 GAGE_MANAGER_TEMPLATE = 'Gage Manager: {MODEL_NAME}\n     Version: 4.2.1\n     Filepath Separator: \ \nEnd:'
 
 GAGE_TEMPLATE = 'Gage: {GAGE_NAME}\n     Last Modified Date: 26 May 2018\n     Last Modified Time: 07:25:21\n' \
                 '     Reference Height Units: Meters\n     Reference Height: 10.0\n     Gage Type: Precipitation\n' \
-                '     Precipitation Type: Incremental\n     Units: MM\n     Data Type: PER-CUM\n     Data Source Type: Manual Entry\n' \
+                '     Precipitation Type: Incremental\n     Units: MM\n     Data Type: PER-CUM\n     Data Source Type: Modifiable DSS\n' \
                 '     Variant: Variant-1\n       Last Variant Modified Date: 21 May 2018\n       Last Variant Modified Time: 13:26:44\n' \
-                '       Default Variant: Yes\n       DSS File Name: {MODEL_NAME}.dss\n' \
+                '       Default Variant: Yes\n       DSS File Name: {MODEL_NAME}_input.dss\n' \
                 '       DSS Pathname: //{GAGE_NAME}/PRECIP-INC//1HOUR/GAGE/\n       Start Time: {START_DATE}\n' \
                 '       End Time: {END_DATE}\n     End Variant: Variant-1\nEnd:'
 
@@ -59,13 +60,13 @@ HEC_DSSVUE_SH = 'hec-dssvue.sh'
 HEC_HMS_MODEL_DIR = '/home/curw/distributed_hec/distributed_model'
 BASIN_STATES_DIR = 'basinStates'
 HEC_EVENT = 'hec_event'
-PRE_PROCESSING_SCRIPT = 'CSVTODSS.py'
-POST_PROCESSING_SCRIPT = 'DSSTOCSV.py'
-HEC_INPUT_DSS = '{MODEL_NAME}_input.dss'
-HEC_OUTPUT_DSS = '{MODEL_NAME}_run.dss'
-CONTROL_FILE_NAME = '{MODEL_NAME}.control'
-GAGE_FILE_NAME = '{MODEL_NAME}.gage'
-RUN_FILE_NAME = '{MODEL_NAME}.run'
+PRE_PROCESSING_SCRIPT = '/home/curw/distributed_hec/CSVTODSS.py'
+POST_PROCESSING_SCRIPT = '/home/curw/distributed_hec/DSSTOCSV.py'
+HEC_INPUT_DSS = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}_input.dss'
+HEC_OUTPUT_DSS = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}_run.dss'
+CONTROL_FILE_NAME = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}.control'
+GAGE_FILE_NAME = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}.gage'
+RUN_FILE_NAME = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}.run'
 STATE_INDEX_NAME = HEC_EVENT + '.stateIndex'
-HEC_EVENT_SCRIPT = '{MODEL_NAME}.script'
+HEC_EVENT_SCRIPT = '/home/curw/distributed_hec/distributed_model/{MODEL_NAME}.script'
 
